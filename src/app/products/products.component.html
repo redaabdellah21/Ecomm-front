@@ -1,0 +1,54 @@
+<div class ="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row" *ngIf="products">
+        <div>
+          <h3>{{title}}</h3>
+        </div>
+          <div *ngFor="let p of products._embedded.products">
+              <div class="card" style="width:300px">
+                <img class="card-img-top" src="{{this.catService.host+'/photoProduct/'+p.id+'?ts='+getTS()}}" alt="Product image">
+                <div *ngIf="authenService.isAdmin()">
+                  <div class="card-img-bottom">
+                    <button class="btn btn-dark" (click)="onEditPhoto(p)">change photo</button>
+                    <p *ngIf="editPhoto && currentProduct==p">
+                      <input type="file" (change)="onSelectedFile($event)">
+                      <button class="btn btn-success" (click)="uploadPhoto()">Upload</button>
+                      {{progress}}
+                    </p>
+                  </div>
+                </div>
+                  <h4 class="card-title">{{p.name}}</h4>
+                  <div class="card-body">
+                    <div>
+                      <span *ngIf="p.promotion">
+                        <img src="../../assets/images/promotion.png" class="img-fluid">
+                      </span>
+                      <span *ngIf="p.selected; else elseBlock">
+                        <img src="../../assets/images/selected.png" class="img-fluid">
+                      </span>
+                      <ng-template #elseBlock><img src="../../assets/images/notSelected.png" class="img-fluid" height="3"></ng-template>
+                      <span *ngIf="p.available">
+                        <img src="../../assets/images/available.png" class="img-fluid">
+                      </span>
+
+                    </div>
+                    <div>Description:  {{p.discription}}</div>
+                    <div>Prix: {{p.currentPrice| number:"0.2"}}</div>
+                  </div>
+                    <div>
+                      <form #form="ngForm" (ngSubmit)="onAddProductToCaddy(p)">
+                        <p>Quantité: </p>
+                        <input type="number" name="quantity" ngModel style=" width: 40px"[(ngModel)]="p.quantity">
+                        <button>
+                          <img src="../../assets/images/caddy.png" class="img-fluid"> add
+                        </button>
+                      </form>
+                    </div>
+              </div>
+              <br>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
