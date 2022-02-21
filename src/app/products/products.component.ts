@@ -3,6 +3,8 @@ import {CatalogueService} from "../catalogue.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {HttpEventType, HttpResponse} from "@angular/common/http";
 import {AuthentificationService} from "../services/authentification.service";
+import {Product} from "../model/product.model";
+import {CaddyService} from "../services/caddy.service";
 
 @Component({
   selector: 'app-products',
@@ -90,7 +92,11 @@ export class ProductsComponent implements OnInit {
   private _title: string="";
   private _timestamp : number=0;
 
-  constructor(public catService: CatalogueService, private route:ActivatedRoute, private router:Router,private _authenService: AuthentificationService) {
+  constructor(public catService: CatalogueService,
+              private route:ActivatedRoute,
+              private router:Router,
+              private _authenService: AuthentificationService,
+              private caddyService:CaddyService) {
   }
 
   ngOnInit(): void {
@@ -179,7 +185,12 @@ export class ProductsComponent implements OnInit {
     return this._timestamp;
   }
 
-  onAddProductToCaddy(p: any) {
-    
+  onAddProductToCaddy(p: Product) {
+    this.caddyService.addProductToCaddy(p);
+  }
+
+  onProductDetails(p: Product) {
+    let url= btoa(p._links.product.href);
+    this.router.navigateByUrl("product-detail/"+url)
   }
 }

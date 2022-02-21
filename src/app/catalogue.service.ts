@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpEvent, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Product} from "./model/product.model";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,9 @@ export class CatalogueService {
   public getRessource(url:string){
     return this.http.get(this.host+url);
   }
+  public getProduct(url:string): Observable<Product>{
+    return this.http.get<Product>(url);
+  }
 
   // @ts-ignore
   uploadPhotoProduct(file : File, idProduct): Observable<HttpEvent<{}>> {
@@ -22,5 +26,9 @@ export class CatalogueService {
       responseType:'text'
     });
     return  this.http.request(req);
+  }
+
+  public patchResource(url: string, data: any){
+    return this.http.patch(url,data);
   }
 }
