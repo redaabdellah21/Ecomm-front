@@ -1,3 +1,5 @@
+import {Category} from "./category.model";
+
 export interface Product {
 
   id:number;
@@ -8,6 +10,7 @@ export interface Product {
   selected: boolean;
   available: boolean;
   photoName: string;
+  categoryId:Category;
   quantity: number;
   _links:{
     self:{

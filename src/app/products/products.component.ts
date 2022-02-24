@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import {CatalogueService} from "../catalogue.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
-import {HttpEventType, HttpResponse} from "@angular/common/http";
+import {HttpErrorResponse, HttpEventType, HttpResponse} from "@angular/common/http";
 import {AuthentificationService} from "../services/authentification.service";
 import {Product} from "../model/product.model";
 import {CaddyService} from "../services/caddy.service";
+import {NgForm} from "@angular/forms";
+import {Employee} from "../model/employee";
+import {Category} from "../model/category.model";
+import {AppComponent} from "../app.component";
+import {stringify} from "@angular/compiler/src/util";
 
 @Component({
   selector: 'app-products',
@@ -96,7 +101,8 @@ export class ProductsComponent implements OnInit {
               private route:ActivatedRoute,
               private router:Router,
               private _authenService: AuthentificationService,
-              private caddyService:CaddyService) {
+              private caddyService:CaddyService,
+              public ap:AppComponent) {
   }
 
   ngOnInit(): void {
@@ -112,7 +118,7 @@ export class ProductsComponent implements OnInit {
           }
           else if (p1==2){
             let idcategorie= this.route.snapshot.params["p2"];
-            this._title="Produit de la catégorie: "+idcategorie;
+            this._title="Produit de la catégorie: "+this.ap.currentCategory.categoryName;
             this.getProducts('/categories/'+idcategorie+'/products');
           }
           else if (p1==3){
@@ -143,7 +149,7 @@ export class ProductsComponent implements OnInit {
       this.getProducts('/products/search/dispoProducts');
     }
   }
-  private getProducts(url: string){
+  public getProducts(url: string){
     this.catService.getRessource(url)
       .subscribe(data=>{
         this._products=data;
@@ -192,5 +198,48 @@ export class ProductsComponent implements OnInit {
   onProductDetails(p: Product) {
     let url= btoa(p._links.product.href);
     this.router.navigateByUrl("product-detail/"+url)
+  }
+
+  onAddProduct(addForm: NgForm) {
+    // @ts-ignore
+    document.getElementById("btnAddProduct").click();
+    this.catService.addProduct(addForm.value).subscribe(
+      (response :  Product)=>{
+        console.log(response);
+        addForm.reset();
+      },
+      (error :  HttpErrorResponse)=>{
+        alert(error.message);
+      }
+    );
+    this.router.navigateByUrl("/products/1/0");
+
+  }
+
+ // onAddCategory(catName: String) {
+    // @ts-ignore
+    //document.getElementById("btnAddCategory").click();
+  //  this.catService.addCategory(catName).subscribe(
+    //  (response :  Category)=>{
+      //  console.log(response);
+
+   //   },
+    //  (error :  HttpErrorResponse)=>{
+    //    alert(error.message);
+    // }
+   // );
+   // this.router.navigateByUrl("/products/1/0");
+
+ // }
+  onSearchProduct(searchform: string) {
+    this.catService.SearchProduct(searchform.toString()).subscribe(
+      (response :  Product)=>{
+        console.log(response);
+        this.onProductDetails(response);
+      },
+      (error :  HttpErrorResponse)=>{
+        alert(error.message);
+      }
+    );
   }
 }

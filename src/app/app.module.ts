@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
 import { CaddiesComponent } from './caddies/caddies.component';
+import { EmployeeComponent } from './employee/employee.component';
 
 //@ts-ignore
 @NgModule({
@@ -17,7 +18,8 @@ import { CaddiesComponent } from './caddies/caddies.component';
     ProductsComponent,
     LoginComponent,
     ProductDetailComponent,
-    CaddiesComponent
+    CaddiesComponent,
+    EmployeeComponent
   ],
   imports: [
     BrowserModule,

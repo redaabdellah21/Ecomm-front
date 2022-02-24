@@ -1,3 +1,18 @@
+<button *ngIf="authenService.isAdmin()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-product">Add Product</button>
+<button *ngIf="authenService.isAdmin()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-category">Add Category</button>
+
+<div>
+  <form #searchform="ngForm" >
+    <input type="text" ngModel name="search">
+    <button (click)="onSearchProduct(searchform.value)" class="form-control" type="submit" class="btn btn-outline-danger">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+      </svg>
+      Search
+    </button>
+  </form>
+</div>
+
 <div class ="container">
   <div class="row">
     <div class="col-md-12">
@@ -5,6 +20,8 @@
         <div>
           <h3>{{title}}</h3>
         </div>
+
+        <div style="width: 100%;height: 50px"></div>
           <div *ngFor="let p of products._embedded.products">
               <div class="card" style="width:300px">
                 <img class="card-img-top" (click)="onProductDetails(p)"  src="{{this.catService.host+'/photoProduct/'+p.id+'?ts='+getTS()}}" alt="Product image">
@@ -39,7 +56,7 @@
                     <p>Quantité: </p>
                     <input type="number" name="quantity" ngModel style=" width: 40px"[(ngModel)]="p.quantity">
                     <button>
-                      <img src="../../assets/images/caddy.png" class="img-fluid"> add
+                      <i class='fas fa-cart-plus' style='font-size:24px'></i>
                     </button>
                   </form>
                 </div>
@@ -47,6 +64,100 @@
               <br>
           </div>
         </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal-add-product" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <form #addForm="ngForm" (ngSubmit)="onAddProduct(addForm)">
+        <div class="modal-header px-4">
+          <h5 class="modal-title" id="product">Create New Product</h5>
+        </div>
+        <div class="modal-body px-4">
+          <div class="row mb-2">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="name">Product name</label>
+                <input type="text" ngModel name="name" class="form-control" id="name" />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group mb-4">
+                <label for="description">Description</label>
+                <input type="text" ngModel name="description" class="form-control" id="description"/>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group mb-4">
+                <label for="currentPrice">Price</label>
+                <input type="number" ngModel name="currentPrice" class="form-control" id="currentPrice"  />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group mb-4">
+                <label for="photoName">Photo Name</label>
+                <input type="text" ngModel name="photoName" class="form-control" id="photoName"  />
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group mb-4">
+                <label for="categoryId">Category Id</label>
+                <input type="number" ngModel name="categoryId" class="form-control" id="categoryId"  />
+              </div>
+            </div>
+            <div>
+              <div class="form-group">
+                <label for="promotion">Promotion</label>
+                <input type="checkbox" ngModel name="promotion" class="form-control" id="promotion" style="width: auto" />
+              </div>
+              <div class="form-group">
+                <label for="selected">Selected</label>
+                <input type="checkbox" ngModel name="selected" class="form-control" id="selected" style="width: auto" />
+              </div>
+              <div class="form-group">
+                <label for="available">Available</label>
+                <input type="checkbox" ngModel name="available" class="form-control" id="available" style="width: auto"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer px-4">
+          <button type="button" id ="btnAddProduct" class="btn btn-smoke btn-pill" data-dismiss="modal">Cancel</button>
+          <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary btn-pill">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div class="modal fade" id="modal-add-category" tabindex="-1" role="dialog" aria-labelledby="category" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <form #addForm="ngForm" >
+        <div class="modal-header px-4">
+          <h5 class="modal-title" id="category">Create New Category</h5>
+        </div>
+        <div class="modal-body px-4">
+          <div class="row mb-2">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="categoryName">category name</label>
+                <input type="text" ngModel name="categoryName" class="form-control" id="categoryName" />
+              </div>
+            </div>
+            </div>
+          </div>
+        <div class="modal-footer px-4">
+          <button type="button" id ="btnAddCategory" class="btn btn-smoke btn-pill" data-dismiss="modal">Cancel</button>
+          <!--(click)="onAddCategory(addForm.value)"-->
+          <button type="submit" class="btn btn-primary btn-pill">Add</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
