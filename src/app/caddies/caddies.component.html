@@ -1,0 +1,28 @@
+<div style="height: 50px">
+
+</div>
+<div class="card col-md-9">
+  <div class="card-header">Caddies</div>
+  <div class="card-body">
+    <table class="table table-striped">
+      <tr>
+        <th>Id</th><th>Name</th><th>Quantity</th><th>Price</th>
+      </tr>
+      <tr *ngFor="let pi of caddyService.getCurrentCaddy().items.values()">
+        <td >{{pi.productId}}</td>
+        <td>{{pi.productName}}</td>
+        <td>{{pi.quantity}}</td>
+        <td>{{pi.price}}</td>
+      </tr>
+      <tr>
+        <td colspan="3">Total</td>
+        <td>{{caddyService.getTotal()}}</td>
+        <button (click)="onPay()" class="btn btn-info"> Pay </button>
+      </tr>
+    </table>
+    <p id="demo"></p>
+  </div>
+</div>
+<div style="height: 300px">
+
+</div>

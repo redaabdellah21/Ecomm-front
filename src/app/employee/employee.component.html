@@ -1,0 +1,208 @@
+<div style="height: 45px"></div>
+<div class="container">
+  <div class="content contact-list">
+    <div class="card card-default">
+      <div class="card-header align-items-center px-3 px-md-5">
+        <h2>Employees</h2>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-employee">Add Employee</button>
+      </div>
+      <div class="col-md-3">
+        <form #searchform="ngForm" >
+          <label for="key">Rechercher un employé</label>
+          <input type="search" (ngModelChange)="onSearchProduct(key.value)" #key="ngModel" ngModel class="form-control" id="key" name="key">
+        </form>
+      </div>
+
+      <div class="card-body px-3 px-md-7">
+        <div class="row">
+          <div *ngFor="let employee of _employees" class="col-lg-6 col-xl-4 col-md-6 col-sm-12">
+            <div class="card card-default p-4">
+              <div class="media text-secondary" data-toggle="modal" data-target="">
+                <img src="{{this.emploloyeeService.url+'/employee/photoEmployee/'+employee.id+'?ts='+getTS()}}" class="mr-3 img-fluid rounded" alt="Avatar Image" />
+                <div class="media-body">
+                  <h5 class="mt-0 mb-2 text-dark">{{employee.name}}</h5>
+                  <ul class="list-unstyled text-smoke text-smoke">
+
+                    <li class="d-flex">
+                      <i class="mdi mdi-email mr-1"></i>
+                      <span><a href="mailto:{{employee.email}}">{{employee.email}}</a></span>
+                    </li>
+                    <li class="d-flex">
+                      <i class="mdi mdi-phone mr-1"></i>
+                      <span><a href="tel:{{employee.phone}}">{{employee.phone}}</a></span>
+                    </li>
+                    <li class="d-flex">
+                      <i class='fas fa-user-tie mr-1'></i>
+                      <span>{{employee.jobTitle}}</span>
+                    </li>
+                  </ul>
+                 <a> <button style="background-color: red" type="button" (click)=" ondeleteChange(employee)" class="btn-close-icon" data-toggle="modal"  data-target="#model-delete-employee" aria-label="Delete">
+                   <i class="mdi mdi-close"></i>
+                 </button></a>
+                  <a><button type="button" (click)=" onEditChange(employee) " class="btn-edit-icon" data-toggle="modal" data-target="#modal-edit-employee" aria-label="Edit">
+                    <i class="mdi mdi-pencil"></i>
+                  </button></a>
+
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Add employee Button  -->
+    <div class="modal fade" id="modal-add-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <form #addForm="ngForm" (ngSubmit)="onAddEmployee(addForm)">
+            <div class="modal-header px-4">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Create New Employee</h5>
+            </div>
+            <div class="modal-body px-4">
+              <div class="row mb-2">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="name">Employee name</label>
+                    <input type="text" ngModel name="name" class="form-control" id="name"/>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for="email">Email</label>
+                    <input type="email" ngModel name="email" class="form-control" id="email" />
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for="phone">Phone</label>
+                    <input type="text" ngModel name="phone" class="form-control" id="phone" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for="photoName">PhotoName</label>
+                    <input type="text" ngModel name="photoName" class="form-control" id="photoName" />
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for="jobTitle">JobTitle</label>
+                    <input type="text" ngModel name="jobTitle" class="form-control" id="jobTitle" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer px-4">
+              <button type="button" id ="btnCloseform" class="btn btn-smoke btn-pill" data-dismiss="modal">Cancel</button>
+              <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary btn-pill">Save Employee</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- edit employee Button  -->
+    <div class="modal fade" id="modal-edit-employee" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <form  #EditForm="ngForm">
+            <div class="modal-header px-4">
+              <h5 class="modal-title" id="exampleModaleditCenterTitle">Edit Employee</h5>
+            </div>
+            <div class="modal-body px-4">
+              <!--<div class="form-group row mb-6">
+                <label form="coverImage" class="col-sm-4 col-lg-2 col-form-label">Employee Image</label>
+                <div class="col-sm-8 col-lg-10">
+                  <div class="custom-file mb-1">
+                    <input type="file" class="custom-file-input" id="coverEditImage" required="" />
+                    <label class="custom-file-label" >Choose file...</label>
+                    <div class="invalid-feedback">Example invalid custom file feedback</div>
+                  </div>
+                </div>
+              </div>-->
+
+              <div class="row mb-2">
+                <div class="col-lg-6">
+                  <div class="form-group">
+                    <label for="editName">Employee name</label>
+                    <input type="text"  ngModel="{{editeEmployee?.name}}" name="name" class="form-control" id="editName" value="Albrecht" />
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for="email">Email</label>
+                    <input type="email" ngModel="{{editeEmployee?.email}}" name="email" class="form-control" id="editeemail" value="albrecht.straub@gmail.com" />
+                  </div>
+                </div>
+
+                <input  type ="hidden" ngModel="{{editeEmployee?.id}}" name="id" class="form-control" id="id" placeholder="id" >
+
+                <div class="col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for="editephone">Phone</label>
+                    <input type="text" ngModel="{{editeEmployee?.phone}}" name="phone" class="form-control" id="editephone" value="01-10-1993" />
+                  </div>
+                 </div>
+                <div class="col-lg-6">
+                  <div class="form-group mb-4">
+                    <label for="editphotoName">PhotoName</label>
+                    <input type="text" ngModel="{{editeEmployee?.photoName}}" name="photoName" class="form-control" id="editphotoName" value="Some value about job" />
+                  </div>
+                </div>
+                  <div class="col-lg-6">
+                    <div class="form-group mb-4">
+                    <label for="editjobTitle">Job Title</label>
+                    <input type="text" ngModel="{{editeEmployee?.jobTitle}}" name="jobTitle" class="form-control" id="editjobTitle" value="Some value for event" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer px-4">
+              <button type="button" class="btn btn-smoke btn-pill" id="btnEditCloseform" data-dismiss="modal">Cancel</button>
+              <button (click)="onUpdateEmployee(EditForm.value)"  type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- delete employee Button  -->
+    <div class="modal fade" id ="model-delete-employee" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel"> Delete Employee</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true" >&times;</span>
+            </button>
+          </div>
+          <div class="Model-body">
+            <p>Are you sure you want to delete {{deleteEmployee?.name}} ?</p>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" >No</button>
+              <button (click)="onDeleteEmployee(deleteEmployee!.id)" class="btn btn-danger" data-dismiss="modal" >Yes</button>
+
+            </div>
+          </div>
+          </div>
+      </div>
+    </div>
+    <!-- No employee   -->
+    <div *ngIf="employees?.length==0" class="cole-lg-12 col-md-12  col-xl-12">
+      <div class="alert alert-info" role="alert">
+      <h4 class="alert-heading"> No Employee !</h4>
+      <p>No employee were  Found !</p>
+      </div>
+    </div>
+
+  </div>
+</div>
