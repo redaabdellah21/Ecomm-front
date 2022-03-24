@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {CatalogueService} from "./catalogue.service";
+import {CatalogueService} from "./services/catalogue.service";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {AuthentificationService} from "./services/authentification.service";
 import {CaddyService} from "./services/caddy.service";
 import {HttpErrorResponse} from "@angular/common/http";
-
 
 @Component({
   selector: 'app-root',

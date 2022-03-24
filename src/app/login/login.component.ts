@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(dataForm.username, dataForm.password)
     if(this.authService.isAuthentificated){
       this.authService.saveAuthentificatedUser();
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('products/1/0');
     }
   }
 }

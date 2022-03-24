@@ -8,7 +8,7 @@ import {EmployeeComponent} from "./employee/employee.component";
 
 const routes: Routes = [
   {path:'products/:p1/:p2', component:ProductsComponent},
-  {path:'', redirectTo: 'products/1/0', pathMatch:'full'},
+  {path:'', redirectTo: 'login', pathMatch:'full'},
   {path:'login', component:LoginComponent},
   {path:'product-detail/:url', component:ProductDetailComponent},
   {path:'caddies', component:CaddiesComponent},

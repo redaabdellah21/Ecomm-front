@@ -1,29 +1,27 @@
+<div style="height: 50px">
+
+</div>
+
+
 <button *ngIf="authenService.isAdmin()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-product">Add Product</button>
 <button *ngIf="authenService.isAdmin()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-category">Add Category</button>
 
-<div>
+<!--<div class="col-md-3">
   <form #searchform="ngForm" >
-    <input type="text" ngModel name="search">
-    <button (click)="onSearchProduct(searchform.value)" class="form-control" type="submit" class="btn btn-outline-danger">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
-      </svg>
-      Search
-    </button>
+    <input type="search" (ngModelChange)="onSearchProduct(key.value)" #key="ngModel" ngModel class="form-control" name="key">
+
   </form>
-</div>
+</div>-->
 
 <div class ="container">
-  <div class="row">
-    <div class="col-md-12">
+    <div >
       <div class="row" *ngIf="products">
         <div>
           <h3>{{title}}</h3>
         </div>
-
         <div style="width: 100%;height: 50px"></div>
           <div *ngFor="let p of products._embedded.products">
-              <div class="card" style="width:300px">
+              <div class="card" style="width:250px; height: 550px">
                 <img class="card-img-top" (click)="onProductDetails(p)"  src="{{this.catService.host+'/photoProduct/'+p.id+'?ts='+getTS()}}" alt="Product image">
                 <div *ngIf="authenService.isAdmin()">
                   <div class="card-img-bottom">
@@ -52,8 +50,7 @@
                     <div>Prix: {{p.currentPrice| number:"0.2"}}</div>
                   </div>
                 <div>
-                  <form #form="ngForm" (ngSubmit)="onAddProductToCaddy(p)">
-                    <p>Quantité: </p>
+                  <form *ngIf="p.available" #form="ngForm" (ngSubmit)="onAddProductToCaddy(p)">
                     <input type="number" name="quantity" ngModel style=" width: 40px"[(ngModel)]="p.quantity">
                     <button>
                       <i class='fas fa-cart-plus' style='font-size:24px'></i>
@@ -66,7 +63,6 @@
         </div>
     </div>
   </div>
-</div>
 
 <div class="modal fade" id="modal-add-product" tabindex="-1" role="dialog" aria-labelledby="product" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -138,7 +134,7 @@
 <div class="modal fade" id="modal-add-category" tabindex="-1" role="dialog" aria-labelledby="category" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
-      <form #addForm="ngForm" >
+      <form #addForm="ngForm" (ngSubmit)="onAddCategory(addForm)" >
         <div class="modal-header px-4">
           <h5 class="modal-title" id="category">Create New Category</h5>
         </div>
@@ -154,8 +150,7 @@
           </div>
         <div class="modal-footer px-4">
           <button type="button" id ="btnAddCategory" class="btn btn-smoke btn-pill" data-dismiss="modal">Cancel</button>
-          <!--(click)="onAddCategory(addForm.value)"-->
-          <button type="submit" class="btn btn-primary btn-pill">Add</button>
+          <button [disabled]="addForm.invalid"  type="submit" class="btn btn-primary btn-pill">Add</button>
         </div>
       </form>
     </div>

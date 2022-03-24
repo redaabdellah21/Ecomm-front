@@ -1,34 +1,36 @@
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="#">
-    <img src="../../assets/images/Pharmacie-logo.png" alt="logo image">
-  </a>
-  <ul class="navbar-nav navbar-expand-lg">
-    <li class="nav-item">
-      <a class="nav-link clickable"  (click)="onSelectedProducts()" >Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link clickable" (click)="getCategories()" >Categories</a>
-    </li>
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        Products
-      </a>
-      <div class="dropdown-menu">
-        <a  class="dropdown-item clickable " (click)="onProductsPromo()">Promotion</a>
-        <a  class="dropdown-item clickable " (click)="onProductsDispo()">Disponibles</a>
-      </div>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link " routerLink="/caddies">Caddy</a>
-    </li>
-    <li class="nav-item ">
-      <a class="nav-link " *ngIf="_authService.isAdmin()"  routerLink="/employee" > Employees </a>
-    </li>
-    <li class="nav-item ">
-      <button class="btn-info" style="position: absolute; z-index: 4; right: 10px; height: 40px; letter-spacing: normal;" ><i class="fas fa-sign-out-alt" (click)="onLogout()"></i> </button>
-    </li>
-  </ul>
-</nav>
+<header style="position: fixed; width: 100%;z-index: 10">
+  <nav class="navbar navbar-expand-sm bg-dark navbar-dark"style="height: 50px">
+    <a class="navbar-brand" href="#">
+      <img src="../../assets/images/Pharmacie-logo.png" alt="logo image" height="45px"width="45px">
+    </a>
+    <ul class="navbar-nav navbar-expand-lg">
+      <li class="nav-item">
+        <a class="nav-link clickable"  (click)="onSelectedProducts()" >Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link clickable" (click)="getCategories()" >Categories</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+          Products
+        </a>
+        <div class="dropdown-menu">
+          <a  class="dropdown-item clickable " (click)="onProductsPromo()">Promotion</a>
+          <a  class="dropdown-item clickable " (click)="onProductsDispo()">Disponibles</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link " routerLink="/caddies">Caddy  [{{this.caddyService.getCurrentCaddy().items.size}}]</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link " *ngIf="_authService.isAdmin()"  routerLink="/employee" > Employees </a>
+      </li>
+      <li class="nav-item ">
+        <button class="btn-info" style="position: absolute; z-index: 4; right: 10px; height: 40px; letter-spacing: normal;" ><i class="fas fa-sign-out-alt" (click)="onLogout()"></i> </button>
+      </li>
+    </ul>
+  </nav>
+</header>
 
 <div class ="container">
   <div class="col-md-4" style="padding: 3px;">
@@ -45,46 +47,25 @@
 
 
 <!--footer-->
-<footer class="bg-dark text-center text-white">
-  <!-- Grid container -->
-  <div class="container p-4 pb-0">
-    <!-- Section: Social media -->
+
+<footer  class="navbar-fixed-bottom bg-dark text-center text-white">
+  <div class="container" style="height: 60px">
     <section class="mb-4">
       <!-- Facebook -->
       <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
       ><i class="fab fa-facebook-f"></i
       ></a>
-
       <!-- Twitter -->
       <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
       ><i class="fab fa-twitter"></i
       ></a>
-
-      <!-- Google -->
-      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-      ><i class="fab fa-google"></i
-      ></a>
-
       <!-- Instagram -->
       <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
       ><i class="fab fa-instagram"></i
       ></a>
 
-      <!-- Linkedin -->
-      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-      ><i class="fab fa-linkedin-in"></i
-      ></a>
-
-      <!-- Github -->
-      <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"
-      ><i class="fab fa-github"></i
-      ></a>
     </section>
-    <!-- Section: Social media -->
   </div>
-  <!-- Grid container -->
-
-  <!-- Copyright -->
   <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
     © 2022 Copyright:
     <a class="text-white" href="#">DApharmacie.com</a>

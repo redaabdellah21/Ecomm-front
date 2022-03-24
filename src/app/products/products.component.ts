@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {CatalogueService} from "../catalogue.service";
+import {CatalogueService} from "../services/catalogue.service";
 import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
 import {HttpErrorResponse, HttpEventType, HttpResponse} from "@angular/common/http";
 import {AuthentificationService} from "../services/authentification.service";
@@ -10,6 +10,7 @@ import {Employee} from "../model/employee";
 import {Category} from "../model/category.model";
 import {AppComponent} from "../app.component";
 import {stringify} from "@angular/compiler/src/util";
+import {ProductDetailComponent} from "../product-detail/product-detail.component";
 
 @Component({
   selector: 'app-products',
@@ -17,6 +18,13 @@ import {stringify} from "@angular/compiler/src/util";
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
+  get p(): Product[] | undefined {
+    return this._p;
+  }
+
+  set p(value: Product[] | undefined) {
+    this._p = value;
+  }
   get authenService(): AuthentificationService {
     return this._authenService;
   }
@@ -89,6 +97,7 @@ export class ProductsComponent implements OnInit {
     this._timestamp = value;
   }
   private _products: any;
+  public _p : Product[] | undefined;
   private _editPhoto: boolean | undefined;
   private _currentProduct: any;
   private _selectedFiles: any;
@@ -148,6 +157,7 @@ export class ProductsComponent implements OnInit {
       this._title="Produit disponibles";
       this.getProducts('/products/search/dispoProducts');
     }
+    this.getP();
   }
   public getProducts(url: string){
     this.catService.getRessource(url)
@@ -156,6 +166,17 @@ export class ProductsComponent implements OnInit {
       },err=>{
         console.log(err);
       })
+  }
+
+  public getP(): void
+  {
+    // @ts-ignore
+    this.catService.getProducts().subscribe(
+      (data)=>{
+        this._p = data;
+      },((error: { message: any; })=>alert(error.message) )
+
+    );
   }
 
   onEditPhoto(p:any) {
@@ -192,7 +213,9 @@ export class ProductsComponent implements OnInit {
   }
 
   onAddProductToCaddy(p: Product) {
+    if (confirm("Vous voulez ajouter ce produit au caddy!")){
     this.caddyService.addProductToCaddy(p);
+    }
   }
 
   onProductDetails(p: Product) {
@@ -216,30 +239,32 @@ export class ProductsComponent implements OnInit {
 
   }
 
- // onAddCategory(catName: String) {
+  onAddCategory(addForm: NgForm) {
     // @ts-ignore
-    //document.getElementById("btnAddCategory").click();
-  //  this.catService.addCategory(catName).subscribe(
-    //  (response :  Category)=>{
-      //  console.log(response);
-
-   //   },
-    //  (error :  HttpErrorResponse)=>{
-    //    alert(error.message);
-    // }
-   // );
-   // this.router.navigateByUrl("/products/1/0");
-
- // }
-  onSearchProduct(searchform: string) {
-    this.catService.SearchProduct(searchform.toString()).subscribe(
-      (response :  Product)=>{
+    document.getElementById("btnAddCategory").click();
+    this.catService.addCategory(addForm.value).subscribe(
+      (response :  Category)=>{
         console.log(response);
-        this.onProductDetails(response);
+
       },
       (error :  HttpErrorResponse)=>{
         alert(error.message);
-      }
+     }
     );
+    this.router.navigateByUrl("/products/1/0");
+
   }
+  onSearchProduct(key: string) {
+    const resultat: Product[]=[];
+    // @ts-ignore
+    for(const product of this._p){
+      if(product.name.toLowerCase().indexOf(key.toLowerCase())!==-1){
+        resultat.push(product);
+      }
+    }
+    this._products=resultat;
+    if(resultat.length===0||!key){
+    }
+  }
+
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpEvent, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Product} from "./model/product.model";
-import {Employee} from "./model/employee";
-import {Category} from "./model/category.model";
+import {Product} from "../model/product.model";
+import {Employee} from "../model/employee";
+import {Category} from "../model/category.model";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,10 @@ export class CatalogueService {
   }
   public getProduct(url:string): Observable<Product>{
     return this.http.get<Product>(url);
+  }
+
+  public getProducts(): Observable<Product[]>{
+    return this.http.get<Product[]>(this.host+"/product/all");
   }
 
   // @ts-ignore
@@ -50,7 +54,7 @@ export class CatalogueService {
   }
 
 
-  //addCategory(categoryName: String): Observable<Category> {
-   // return this.http.post<Category>(`${this.host}/category/add/${categoryName}`);
- // }
+  addCategory(categoryName: Category): Observable<Category> {
+    return this.http.post<Category>(`${this.host}/category/add`,categoryName);
+  }
 }
